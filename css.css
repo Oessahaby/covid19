@@ -1,0 +1,18 @@
+body {
+    background: #e8cbc0;
+    background: -webkit-linear-gradient(to right, #e8cbc0, #636fa4);
+    background: linear-gradient(to right, #e8cbc0, #636fa4);
+}
+input[type="checkbox"]{
+    width: 30px; /*Desired width*/
+    height: 30px; /*Desired height*/
+    cursor: pointer;
+    
+
+  }
+  .dropdown-menu {
+    height: auto;
+    max-height: 600px;
+    overflow-x: hidden;
+}
+
