@@ -1,5 +1,8 @@
 
 $(document).ready(function(){
+  
+
+
 const url = 'https://pomber.github.io/covid19/timeseries.json';
 
 
@@ -14,7 +17,7 @@ array_confirmed =[];
 var label_confirmed = 0;
 var label_deaths = 0;
 var label_recovered = 0;
-    var remp = '';
+    //var remp = '';
     var guerie = 0;
     var confirme = 0;
     var mortes = 0;
@@ -26,26 +29,52 @@ var label_recovered = 0;
 
    var op ='';
   $.each(data, function (key, entry) {
+  
     guerie = guerie + data[key][data[key].length -1]["recovered"];
     mortes = mortes +  data[key][data[key].length -1]["deaths"];
     confirme = confirme + data[key][data[key].length -1]["confirmed"];;
     var d = data[key][data[key].length -1]["confirmed"];
     var b = data[key][data[key].length -1]["recovered"];
     var c = data[key][data[key].length -1]["deaths"];
-    remp+= '<tr>';
+    /*remp+= '<tr>';
     remp+='<td style="font-size:14px;">'+key+'</td>';
     remp+='<td style="font-size:14px;">'+d+'</td>';
     remp+='<td style="font-size:14px;">'+b+'</td>';
-    remp+='<td style="font-size:14px;">'+c+'</td>';
+    remp+='<td style="font-size:14px;">'+c+'</td>';*/
+
       
 
       a.push(key)
+
      
     //dropdown.append($('<option id="op"></option>').attr('value','').text(key));
     op += '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  id="'+key+'" value="'+key+'" name=type class="check"><label for="'+key+'">'+key+'</label><br>';
-    
-
+ 
+  
   })
+  $('#table').DataTable({
+    ajax: { 
+    url :'https://corona-virus-stats.herokuapp.com/api/v1/cases/countries-search?limit=200',
+    dataSrc: 'data.rows',
+   },
+   columns : [
+     {data: 'flag',"render":function(data, typ,row){
+       return '<img src = "'+data+'"style="height:20px;width:40px;"/>';
+     },
+   },
+     {data: 'country'},
+     {data: 'total_cases'},
+     {data: 'total_deaths'},
+     {data: 'total_recovered',render:function(data,type,row){
+       return '<span >  +'+data+'</span>';
+     }}
+ 
+     
+ 
+ 
+   ]
+ });
+  
   $("#country").html(op);
   for(var i=data["Morocco"].length-1; i>=data["Morocco"].length-35;i++){
     $.each(data, function (key, entry) {
@@ -71,7 +100,7 @@ var label_recovered = 0;
 document.getElementById("hco").innerHTML= confirme;
 document.getElementById("hde").innerHTML =mortes;
 document.getElementById("hre").innerHTML = guerie;
-  $('#table').append(remp);
+  //$('#table').append(remp);
   /*-----------------------------Line Chart --------------------------------*/
   new Chart(document.getElementById("line-chart"), {
     type: 'line',
@@ -106,26 +135,27 @@ document.getElementById("hre").innerHTML = guerie;
       }
     }
   });
-  new Chart(document.getElementById("doughnut-chart"), {
-    type: 'doughnut',
-    data: {
-      labels: ['recovered','deaths','confirmed'],
-      datasets: [
-        {
-          label: "Population (millions)",
-          backgroundColor: ["green", "red",""],
-          data: [guerie,mortes,confirme]
-        }
-      ],
-      
-    },
-    options: {
-      title: {
-        display: true,
-        text: 'statistics world ',
-        
+
+new Chart(document.getElementById("doughnut-chart"), {
+  type: 'pie',
+  data: {
+    labels: ['recovered','deaths','confirmed'],
+    datasets: [
+      {
+        label: "Population (millions)",
+        backgroundColor: ["green", "red",""],
+        data: [guerie,mortes,confirme]
       }
+    ],
+    
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'statistics world ',
+      
     }
+  }
 });
 });
 

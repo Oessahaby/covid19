@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Covide 19</title>
+
+
    
     <!--   add bootstrap-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -25,7 +27,7 @@
     <link rel="stylesheet" href="css.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
  
-   
+
  
     
 </head>
@@ -76,7 +78,7 @@
         <!-----------------------------------------------------WELCOME DASHBOARD --------------------------------------------------->
         <div id="div1">
         <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-8 col-8">
         <div style="margin-left:500px">
 
                 <div _ngcontent-ukn-c28="" class="row ng-tns-c28-0">
@@ -143,21 +145,21 @@
                 </div>
             </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 col-5">
             <canvas id="line-chart" width="100" height="90"></canvas>
         </div>
             <div class="col-md-5" style="margin-left: 250px ;">
-                <p style="font-size: 20px; color: black;">Countries statistics</p>
+                <p style="font-size: 20px; color: black;">Countries statistics officiel</p>
                 <div style="height:550px;overflow:auto;">
 
-        <table class="table table-hover table-dark" id="table" style="text-align: center; border: 2px solid white;">
+        <table class="table table-hover table-light" id="table" style="text-align: center; border: 2px solid white; background-color:aquamarine;">
             <thead >
               <tr>
-
-                <th scope="col" style="color:aqua; font-size:14px;">COUNTRY</th>
-                <th scope="col"style="color:aqua;font-size:14px;">CONFIRMED</th>
-                <th scope="col"style="color:aqua;font-size:14px;">RECOVERED</th>
-                <th scope="col"style="color:aqua;font-size:14px;">DEATHS</th>
+                <th scope="col" style="color:aqua; font-size:14px; background-color: black;">Drapeau</th>
+                <th scope="col" style="color:aqua; font-size:14px;background-color: black;">COUNTRY</th>
+                <th scope="col"style="color:aqua;font-size:14px; background-color: black;">CONFIRMED</th>
+                <th scope="col"style="color:aqua;font-size:14px;background-color: black;">RECOVERED</th>
+                <th scope="col"style="color:aqua;font-size:14px;background-color: black;">DEATHS</th>
 
               </tr>
             </thead>
@@ -166,11 +168,13 @@
             </tbody>
           </table>
         </div>
-    </div>
         </div>
+    </div>
+      
         <div >
             <canvas id="doughnut-chart" height="100px" width="400px"></canvas>
                 </div>
+</div>
 </div>
 
         
@@ -214,9 +218,14 @@
             </div>
         
     </footer>
+    <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+
     
 
-<script src="script.js"></script>
+
 
 
     
