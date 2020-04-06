@@ -1,14 +1,11 @@
 
 $(document).ready(function(){
-  
-
-
+var date= new Date();
+var currentdate= date.getDate()+'-'+(date.getMonth()+1)+'-'+date.getFullYear();
+const Docref = firebase.firestore();
 const url = 'https://pomber.github.io/covid19/timeseries.json';
-
-
-
 $.getJSON(url, function (data) {
-    a =new Array();
+a =new Array();
 b= new Array();
 labels =[];
 array_recovered = [];
@@ -17,10 +14,11 @@ array_confirmed =[];
 var label_confirmed = 0;
 var label_deaths = 0;
 var label_recovered = 0;
-    //var remp = '';
-    var guerie = 0;
-    var confirme = 0;
-    var mortes = 0;
+var x;
+//var remp = '';
+var guerie = 0;
+var confirme = 0;
+var mortes = 0;
     for(var i=data["Morocco"].length-1; i>=data["Morocco"].length-35;i++){
         label_date = data["Morocco"][i]["date"];
         labels.unshift(label_date)
@@ -28,6 +26,8 @@ var label_recovered = 0;
     }
 
    var op ='';
+  
+
   $.each(data, function (key, entry) {
   
     guerie = guerie + data[key][data[key].length -1]["recovered"];
@@ -46,12 +46,25 @@ var label_recovered = 0;
 
       a.push(key)
 
-     
+
     //dropdown.append($('<option id="op"></option>').attr('value','').text(key));
+    
     op += '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  id="'+key+'" value="'+key+'" name=type class="check"><label for="'+key+'">'+key+'</label><br>';
- 
-  
+    x = currentdate+'/'+ key
+    const doc = Docref.doc(x)
+    doc.set({
+      confirmed : data[key][data[key].length -1]["confirmed"],
+      deaths : data[key][data[key].length -1]["deaths"],
+      recovered : data[key][data[key].length -1]["recovered"]
+    }).then(function(){
+      console.log("done");
+    }).catch(function(){
+      console.log("error");
+    });
+    
+   
   })
+ 
   $('#table').DataTable({
     ajax: { 
     url :'https://corona-virus-stats.herokuapp.com/api/v1/cases/countries-search?limit=200',
@@ -74,6 +87,7 @@ var label_recovered = 0;
  
    ]
  });
+ 
   
   $("#country").html(op);
   for(var i=data["Morocco"].length-1; i>=data["Morocco"].length-35;i++){

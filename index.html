@@ -158,8 +158,8 @@
                 <th scope="col" style="color:aqua; font-size:14px; background-color: black;">Drapeau</th>
                 <th scope="col" style="color:aqua; font-size:14px;background-color: black;">COUNTRY</th>
                 <th scope="col"style="color:aqua;font-size:14px; background-color: black;">CONFIRMED</th>
-                <th scope="col"style="color:aqua;font-size:14px;background-color: black;">RECOVERED</th>
                 <th scope="col"style="color:aqua;font-size:14px;background-color: black;">DEATHS</th>
+                <th scope="col"style="color:aqua;font-size:14px;background-color: black;">RECOVERED</th>
 
               </tr>
             </thead>
@@ -218,16 +218,37 @@
             </div>
         
     </footer>
-    <script src="script.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    
   
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
 
-    
 
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
 
-
-
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyCVgcQiYfe89kRv6i8_8rorHz14WsFwwdA",
+    authDomain: "covid19-1999.firebaseapp.com",
+    databaseURL: "https://covid19-1999.firebaseio.com",
+    projectId: "covid19-1999",
+    storageBucket: "covid19-1999.appspot.com",
+    messagingSenderId: "530594632800",
+    appId: "1:530594632800:web:255852fd0990d16cda9f05",
+    measurementId: "G-DVRNRR8GRJ"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+ 
+</script>
+<script src="script.js"></script>
     
 </body>
 </html>
