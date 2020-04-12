@@ -1,9 +1,156 @@
 
 $(document).ready(function(){
+  var data_affected = Array();
+  const url = 'https://pomber.github.io/covid19/timeseries.json';
+  $.getJSON(url, function (data) {
+
+
+    am4core.ready(function() {
+    
+      // Themes begin
+      am4core.useTheme(am4themes_animated);
+      // Themes end
+      
+      // Create map instance
+      var chart = am4core.create("chartdiv", am4maps.MapChart);
+      
+      // Set map definition
+      chart.geodata = am4geodata_worldLow;
+      
+      // Set projection
+      chart.projection = new am4maps.projections.Miller();
+      
+      // Create map polygon series
+      var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+ 
+      polygonSeries.exclude = ["AQ"];
+
+      
+      // Make map load polygon (like country names) data from GeoJSON
+      polygonSeries.useGeodata = true;
+      
+      // Configure series
+      var array_confirmed_ev = Array();
+      var array_deaths_ev = Array();
+      var array_recovered_ev = Array();
+      var array_date_ev = Array();
+      var polygonTemplate = polygonSeries.mapPolygons.template;
+      
+      polygonTemplate.events.on("hit", function(ev) {
+        try{
+        if(ev.target.dataItem.dataContext.name == "United States"){
+          ev.target.dataItem.dataContext.name = "US";
+        }
+        console.log(ev.target.dataItem.dataContext.name)
+        document.getElementById("div1").style.display = 'none';
+        document.getElementById("div2").style.display = 'inline';
+        document.getElementById('home').style.display='inline';
+        document.getElementById('h33').style.display='none';
+        
+        array_confirmed_ev = [];
+        array_deaths_ev =[];
+        array_recovered_ev =[];
+        array_date_ev =[];
+        
+        remp3 ='<h2 >'+ev.target.dataItem.dataContext.name+'</h2><div style="height:400px;overflow:auto;"><table class="table table-hover table-dark" id="table2" style="text-align: center; border: 2px solid white; margin-right:100px;"><thead ><tr><th scope="col"style="color:aqua;font-size:14px;">CONFIRMED</th><th scope="col"style="color:aqua;font-size:14px;">DEATHS</th><th scope="col"style="color:aqua;font-size:14px;">RECOVERED</th><th scope="col" style="color:aqua; font-size:14px;">DATE</th></tr></thead><tbody id="tbody" >';
+        //data[ev.target.dataItem.dataContext.name].forEach(element=>{
+          
+          for (var i=0;i< data[ev.target.dataItem.dataContext.name].length;i++){
+            array_confirmed_ev.push(data[ev.target.dataItem.dataContext.name][i]["confirmed"]);
+            array_deaths_ev.push(data[ev.target.dataItem.dataContext.name][i]["deaths"]);
+            array_recovered_ev.push(data[ev.target.dataItem.dataContext.name][i]["recovered"]);
+            array_date_ev.push(data[ev.target.dataItem.dataContext.name][i]["date"]);
+
+        remp3+= '<tr>';
+        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["confirmed"]+'</td>';
+        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["deaths"]+'</td>';
+        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["recovered"]+'</td>';
+        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["date"]+'</td>';
+  
+        }
+        $('#div3').append(remp3+'</tbody></table></div><br><br></br>');
+        console.log(array_confirmed_ev);
+          
+        //})
+  
+  
+        new Chart(document.getElementById("chart"), {
+          type: 'line',
+          data: {
+            labels: array_date_ev,
+            datasets: [{ 
+                data: array_confirmed_ev,
+                label: "deaths",
+                borderColor: "#3e95cd",
+                fill: false
+              }, { 
+                data: array_recovered_ev,
+                label: "recovered",
+                borderColor: "green",
+                fill: false
+              }, { 
+                data: array_deaths_ev,
+                label: "deaths",
+                borderColor: "red",
+                fill: false
+              }
+            ]
+          },
+          options: {
+            title: {
+              display: true,
+              text: 'Covid statistics',
+      
+              fontSize:15,
+              fontColor :'black'
+      
+            }
+          }
+        });
+        }catch(error){
+          alert(ev.target.dataItem.dataContext.name + ' does not have any statics yet');
+          window.location.href = 'index.html'
+        }
+      
+      });
+    
+    
+      polygonTemplate.tooltipText = "{name}";
+      polygonTemplate.polygon.fillOpacity = 0.6;
+      
+      
+      // Create hover state and set alternative fill color
+      var hs = polygonTemplate.states.create("hover");
+      hs.properties.fill = chart.colors.getIndex(0);
+      //jaksjsakjakj
+      polygonTemplate.fill = chart.colors.getIndex(0);
+polygonTemplate.nonScalingStroke = true;
+
+// Hover state
+var hs = polygonTemplate.states.create("hover");
+hs.properties.fill = am4core.color("#367B25");
+
+ // end am4core.ready()
+/*var usaSeries = chart.series.push(new am4maps.MapPolygonSeries());
+usaSeries.geodata = am4geodata_usaLow;
+
+var usPolygonTemplate = usaSeries.mapPolygons.template;
+usPolygonTemplate.tooltipText = "{name}";
+usPolygonTemplate.fill = chart.colors.getIndex(1);
+usPolygonTemplate.nonScalingStroke = true;
+
+// Hover state
+var hs = usPolygonTemplate .states.create("hover");
+hs.properties.fill = am4core.color("#367B25");*/
+      
+    
+      }); // end am4core.ready() 
+    });
+  
 var date= new Date();
 var currentdate= date.getDate()+'-'+(date.getMonth()+1)+'-'+date.getFullYear();
 const Docref = firebase.firestore();
-const url = 'https://pomber.github.io/covid19/timeseries.json';
+
 $.getJSON(url, function (data) {
 a =new Array();
 b= new Array();
@@ -20,9 +167,10 @@ var guerie = 0;
 var confirme = 0;
 var mortes = 0;
     for(var i=data["Morocco"].length-1; i>=data["Morocco"].length-35;i++){
+   
         label_date = data["Morocco"][i]["date"];
         labels.unshift(label_date)
-        i-=7;
+       i-=7;
     }
 
    var op ='';
@@ -71,7 +219,7 @@ var mortes = 0;
     dataSrc: 'data.rows',
    },
    columns : [
-     {data: 'flag',"render":function(data, typ,row){
+     {data: 'flag',"render":function(data, type,row){
        return '<img src = "'+data+'"style="height:20px;width:40px;"/>';
      },
    },
@@ -91,6 +239,7 @@ var mortes = 0;
   
   $("#country").html(op);
   for(var i=data["Morocco"].length-1; i>=data["Morocco"].length-35;i++){
+    
     $.each(data, function (key, entry) {
      label_confirmed+=data[key][i]["confirmed"];
      label_deaths += data[key][i]["deaths"];
@@ -116,7 +265,7 @@ document.getElementById("hde").innerHTML =mortes;
 document.getElementById("hre").innerHTML = guerie;
   //$('#table').append(remp);
   /*-----------------------------Line Chart --------------------------------*/
-  new Chart(document.getElementById("line-chart"), {
+ new Chart(document.getElementById("line-chart"), {
     type: 'line',
     data: {
       labels: labels,
@@ -150,7 +299,9 @@ document.getElementById("hre").innerHTML = guerie;
     }
   });
 
-new Chart(document.getElementById("doughnut-chart"), {
+
+
+/*new Chart(document.getElementById("doughnut-chart"), {
   type: 'pie',
   data: {
     labels: ['recovered','deaths','confirmed'],
@@ -170,7 +321,40 @@ new Chart(document.getElementById("doughnut-chart"), {
       
     }
   }
-});
+});*/
+am4core.useTheme(am4themes_animated);
+
+var chart = am4core.create("doughnut-chart", am4charts.PieChart3D);
+chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+chart.data = [
+  {
+    country: "confirmed",
+    litres: confirme
+  },
+  {
+    country: "deaths",
+    litres: mortes
+  },
+  {
+    country: "recovered",
+    litres: guerie
+  }
+];
+
+chart.innerRadius = am4core.percent(120);
+chart.depth = 5;
+
+/*chart.legend = new am4charts.Legend();
+chart.legend.position = "right";*/
+
+var series = chart.series.push(new am4charts.PieSeries3D());
+series.dataFields.value = "litres";
+series.dataFields.depthValue = "litres";
+series.dataFields.category = "country";
+series.slices.template.cornerRadius = 50;
+series.colors.step = 5;
+
 });
 
 });
@@ -205,9 +389,11 @@ if(favorite.length == 0){
   document.getElementById('home').style.display='inline';
 
 
+
 const url = 'https://pomber.github.io/covid19/timeseries.json';
 document.getElementById("div1").style.display = 'none';
 document.getElementById("div2").style.display = 'inline';
+document.getElementById("chart").style.display = 'none';
 labels_date =new Array();
 labels_date =[]
 $.getJSON(url, function (data){
