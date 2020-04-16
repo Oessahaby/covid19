@@ -3,6 +3,7 @@ $(document).ready(function(){
   var data_affected = Array();
   const url = 'https://pomber.github.io/covid19/timeseries.json';
   $.getJSON(url, function (data) {
+    document.getElementById("lastupdate").innerHTML = 'Last Update '+data["US"][data["US"].length-1]["date"];
 
 
     am4core.ready(function() {
@@ -38,14 +39,17 @@ $(document).ready(function(){
       
       polygonTemplate.events.on("hit", function(ev) {
         try{
+          $('html,body').animate({
+            scrollTop: $("#chart").offset().top},
+            'slow');
         if(ev.target.dataItem.dataContext.name == "United States"){
           ev.target.dataItem.dataContext.name = "US";
         }
         console.log(ev.target.dataItem.dataContext.name)
-        document.getElementById("div1").style.display = 'none';
-        document.getElementById("div2").style.display = 'inline';
-        document.getElementById('home').style.display='inline';
-        document.getElementById('h33').style.display='none';
+        //document.getElementById("div1").style.display = 'none';
+        //document.getElementById("div2").style.display = 'inline';
+        //document.getElementById('home').style.display='inline';
+        //document.getElementById('h33').style.display='none';
         
         array_confirmed_ev = [];
         array_deaths_ev =[];
@@ -61,14 +65,14 @@ $(document).ready(function(){
             array_recovered_ev.push(data[ev.target.dataItem.dataContext.name][i]["recovered"]);
             array_date_ev.push(data[ev.target.dataItem.dataContext.name][i]["date"]);
 
-        remp3+= '<tr>';
+        /*remp3+= '<tr>';
         remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["confirmed"]+'</td>';
         remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["deaths"]+'</td>';
         remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["recovered"]+'</td>';
-        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["date"]+'</td>';
+        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["date"]+'</td>';*/
   
         }
-        $('#div3').append(remp3+'</tbody></table></div><br><br></br>');
+        /*$('#div3').append(remp3+'</tbody></table></div><br><br></br>');*/
         console.log(array_confirmed_ev);
           
         //})
@@ -80,7 +84,7 @@ $(document).ready(function(){
             labels: array_date_ev,
             datasets: [{ 
                 data: array_confirmed_ev,
-                label: "deaths",
+                label: "confirmed",
                 borderColor: "#3e95cd",
                 fill: false
               }, { 
@@ -97,19 +101,27 @@ $(document).ready(function(){
             ]
           },
           options: {
+            legend:{
+              display: true,
+          },
             title: {
               display: true,
-              text: 'Covid statistics',
+              text: 'Covid statistics for '+ev.target.dataItem.dataContext.name ,
       
               fontSize:15,
-              fontColor :'black'
+              fontColor :'black',
       
             }
           }
+         
+          
         });
+
+
+
         }catch(error){
           alert(ev.target.dataItem.dataContext.name + ' does not have any statics yet');
-          window.location.href = 'index.html'
+          //window.location.href = 'index.html'
         }
       
       });
@@ -417,11 +429,11 @@ $.getJSON(url, function (data){
         array_deaths1.push(deaths_country);
         var recovered_country = element["recovered"];
         array_recovered1.push(recovered_country);
-        remp1+= '<tr>';
+        /*remp1+= '<tr>';
         remp1+='<td style="font-size:14px;">'+confirmed_country+'</td>';
         remp1+='<td style="font-size:14px;">'+deaths_country+'</td>';
         remp1+='<td style="font-size:14px;">'+recovered_country+'</td>';
-        remp1+='<td style="font-size:14px;">'+date_country+'</td>';
+        remp1+='<td style="font-size:14px;">'+date_country+'</td>';*/
         });
     
   
@@ -432,7 +444,7 @@ $.getJSON(url, function (data){
         array_deaths1=[];
         array_recovered1 =[];
 
-        $('#div3').append(remp1+'</tbody></table></div><br><br></br>');
+        //$('#div3').append(remp1+'</tbody></table></div><br><br></br>');
    
       
 
@@ -498,13 +510,7 @@ var chart = new Chart(ctx, {
       
   },
   options:{
-    scales: {
-      xAxes: [{
-       ticks: {
-              display: false
-       }
-     }]
-   },
+
       legend:{
           display: true,
       },
@@ -554,13 +560,6 @@ var chart = new Chart(ctx, {
       
   },
   options:{
-    scales: {
-      xAxes: [{
-       ticks: {
-              display: false
-       }
-     }]
-   },
       legend:{
           display: true,
       },
@@ -610,13 +609,7 @@ var chart = new Chart(ctx, {
       
   },
   options:{
-    scales: {
-      xAxes: [{
-       ticks: {
-              display: false
-       }
-     }]
-   },
+
       legend:{
           display: true,
       },
@@ -658,8 +651,36 @@ array_confirmed1=[];
 array_deaths1 = [];
 array_recovered1 =[];
 }) ;
-}  
-         
+} 
+/*var tab =Array();
+var array = Array();
+$.each($("input[name='type']:checked"), function(){
+  tab.push($(this).val());
+});
+tab.forEach(element => {
+ 
+const url = 'https://pomber.github.io/covid19/timeseries.json';
+$.getJSON(url, function (data) {
+  
+  array.push({"country":element,"confirmed": data[element][data[element].length-1]["confirmed"]})
+  console.log(array)
+});
+});
+
+var chart = am4core.create("chartdiv4", am4charts.PieChart);
+
+
+// Add data
+chart.data = array
+
+// Add and configure Series
+var pieSeries = chart.series.push(new am4charts.PieSeries());
+pieSeries.dataFields.value = "confirmed";
+pieSeries.dataFields.category = "country"; 
+
+
+array = [];
+tab =[];*/
       });  
 
 

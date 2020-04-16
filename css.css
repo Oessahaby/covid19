@@ -19,6 +19,9 @@ input[type="checkbox"]{
   width: 100%;
   height: 10vh;
 }
-
-
-
+#chartdiv4{
+  height: 300px;
+}
+#piechart{
+  height: 400px;
+}

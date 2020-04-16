@@ -8,7 +8,6 @@
 
 
 
-
 <!--                        Map  Scripts            -->
     <script src="https://www.amcharts.com/lib/4/core.js"></script>
     <script src="https://www.amcharts.com/lib/4/charts.js"></script>
@@ -65,7 +64,9 @@
              
               
                 </div>
+                
                 <button type="button" id="button" class="btn btn-light">submit</button>
+               
                 
                 <img src="img/img1.PNG" alt="Flowers in Chania" style="width: 100px; height: 40px; margin-left:400px" >
                 <input type="button" id="home" value="HOME" class="btn btn-light" style="margin-left:600px ; display: none;"onclick="location.reload();" ></input>
@@ -188,6 +189,7 @@
 </div>
 
 </div>-->      
+
 <div><h1 style="font-family: Showcard Gothic; float: right; margin-right:30px ;"># STAY AT HOME</h1></div>
   <div id="div1" class="container">
         <div style="margin-left:500px">
@@ -267,6 +269,14 @@
 
        
         <div id="chartdiv" style="height: 600px;"></div>
+        <div class="row">
+
+        <canvas id="chart" ></canvas>
+
+    </div>
+
+        <br>
+        <br>
         
         <!--<div class="row">-->
     
@@ -316,33 +326,38 @@
 
         <div class="container" >
           
-           <div class="col-md-6" id="div3">
+           <!--<div class="col-md-6" id="div3">
                
                 
                 
 
                    
-                </div>
+                </div>-->
                 
                 
     
         
-<div class="col-md-6" >
-    <h3 id="h33">Graph Comparaison Selected Country(confirmed---deaths---recoreved)</h3>
-    <canvas id="linechart"></canvas><br>
-    <canvas id="linechart2"></canvas>
-    <canvas id="linechart3"></canvas>
+<!--<div class="col-md-6" >-->
+    <h3 id="h33" style="margin-left:40%;">Graphs Comparaison Selected Country</h3>
+    <div class="row">
+    <div class="col-md-6 col-sm-6" ><canvas id="linechart" height="180px"></canvas></div>
+    <div class="col-md-6 col-sm-6" ><canvas id="linechart2" height="180px"></canvas></div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-sm-8" ><canvas id="linechart3" height="180px"></canvas></div>
+    <div class="col-md-6 col-sm-4" ><div id="chartdiv4"></div></div>
+</div>
+        </div>
+</div>
+
    
     
-</div>
-
-<canvas id="chart"></canvas>
-
-    
-</div>
+<!--</div>-->
 
 
-</div>
+
+
+
 
 
 <footer _ngcontent-aoq-c27="" class="footer" style="font-size: 15px;">
@@ -351,13 +366,17 @@
     <div _ngcontent-aoq-c27="" class="col-md-6"> 2020 © Created with &#128147;
         
         </span> by <a _ngcontent-aoq-c27="" href="https://github.com/Oessahaby">ESSAHABY Othmane</a>
+        
     </div>
-  
+    <p id="lastupdate" style="font-size: 15px; float:right;"></p>
+    
                 </div>
             </div>
+            
+
         
     </footer>
-    
+
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
     
   
