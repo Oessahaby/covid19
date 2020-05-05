@@ -1,8 +1,11 @@
 
 $(document).ready(function(){
+
   var data_affected = Array();
   const url = 'https://pomber.github.io/covid19/timeseries.json';
   $.getJSON(url, function (data) {
+   
+
     document.getElementById("lastupdate").innerHTML = 'Last Update '+data["US"][data["US"].length-1]["date"];
 
 
@@ -25,6 +28,54 @@ $(document).ready(function(){
       var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
  
       polygonSeries.exclude = ["AQ"];
+      var data_sup = Array();
+      $.each(data, function (key, entry) {
+        if(data[key][data[key].length-1]["confirmed"]>100000){
+          data_sup.push({title:key, id:key,color: chart.colors.getIndex(2),customData:data[key][data[key].length-1]["confirmed"] })
+        }
+      })
+      console.log(data_sup)
+
+      var groupData = [
+        {
+          "name": "EU member before 2004",
+          "color": chart.colors.getIndex(1),
+          "data": data_sup
+        
+        }
+      ]
+
+      // This array will be populated with country IDs to exclude from the world series
+      var excludedCountries = ["AQ"];
+
+      // Create a series for each group, and populate the above array
+      groupData.forEach(function(group) {
+        var series = chart.series.push(new am4maps.MapPolygonSeries());
+        series.name = group.name;
+        series.useGeodata = true;
+        var includedCountries = [];
+        group.data.forEach(function(country) {
+          includedCountries.push(country.id);
+          excludedCountries.push(country.id);
+        });
+        series.include = includedCountries;
+        console.log(series.include)
+        series.fill = am4core.color(group.color);
+        series.setStateOnChildren = true;
+        series.calculateVisualCenter = true;
+        var mapPolygonTemplate = series.mapPolygons.template;
+        mapPolygonTemplate.fill = am4core.color(group.color);
+        mapPolygonTemplate.fillOpacity = 0.8;
+        mapPolygonTemplate.nonScalingStroke = true;
+        mapPolygonTemplate.tooltipPosition = "fixed"
+        var hoverState = mapPolygonTemplate.states.create("hover");
+        hoverState.properties.fill = am4core.color("#CC0000");
+        mapPolygonTemplate.tooltipText = "{title} joined EU at {customData}"; 
+        series.data = JSON.parse(JSON.stringify(group.data));
+        console.log(series.data)
+      });
+
+
 
       
       // Make map load polygon (like country names) data from GeoJSON
@@ -37,6 +88,7 @@ $(document).ready(function(){
       var array_date_ev = Array();
       var polygonTemplate = polygonSeries.mapPolygons.template;
       
+      
       polygonTemplate.events.on("hit", function(ev) {
         try{
           $('html,body').animate({
@@ -46,17 +98,13 @@ $(document).ready(function(){
           ev.target.dataItem.dataContext.name = "US";
         }
         console.log(ev.target.dataItem.dataContext.name)
-        //document.getElementById("div1").style.display = 'none';
-        //document.getElementById("div2").style.display = 'inline';
-        //document.getElementById('home').style.display='inline';
-        //document.getElementById('h33').style.display='none';
         
         array_confirmed_ev = [];
         array_deaths_ev =[];
         array_recovered_ev =[];
         array_date_ev =[];
         
-        remp3 ='<h2 >'+ev.target.dataItem.dataContext.name+'</h2><div style="height:400px;overflow:auto;"><table class="table table-hover table-dark" id="table2" style="text-align: center; border: 2px solid white; margin-right:100px;"><thead ><tr><th scope="col"style="color:aqua;font-size:14px;">CONFIRMED</th><th scope="col"style="color:aqua;font-size:14px;">DEATHS</th><th scope="col"style="color:aqua;font-size:14px;">RECOVERED</th><th scope="col" style="color:aqua; font-size:14px;">DATE</th></tr></thead><tbody id="tbody" >';
+       // remp3 ='<h2 >'+ev.target.dataItem.dataContext.name+'</h2><div style="height:400px;overflow:auto;"><table class="table table-hover table-dark" id="table2" style="text-align: center; border: 2px solid white; margin-right:100px;"><thead ><tr><th scope="col"style="color:aqua;font-size:14px;">CONFIRMED</th><th scope="col"style="color:aqua;font-size:14px;">DEATHS</th><th scope="col"style="color:aqua;font-size:14px;">RECOVERED</th><th scope="col" style="color:aqua; font-size:14px;">DATE</th></tr></thead><tbody id="tbody" >';
         //data[ev.target.dataItem.dataContext.name].forEach(element=>{
           
           for (var i=0;i< data[ev.target.dataItem.dataContext.name].length;i++){
@@ -65,14 +113,9 @@ $(document).ready(function(){
             array_recovered_ev.push(data[ev.target.dataItem.dataContext.name][i]["recovered"]);
             array_date_ev.push(data[ev.target.dataItem.dataContext.name][i]["date"]);
 
-        /*remp3+= '<tr>';
-        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["confirmed"]+'</td>';
-        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["deaths"]+'</td>';
-        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["recovered"]+'</td>';
-        remp3+='<td style="font-size:14px;">'+data[ev.target.dataItem.dataContext.name][i]["date"]+'</td>';*/
   
         }
-        /*$('#div3').append(remp3+'</tbody></table></div><br><br></br>');*/
+
         console.log(array_confirmed_ev);
           
         //})
@@ -127,33 +170,19 @@ $(document).ready(function(){
       });
     
     
-      polygonTemplate.tooltipText = "{name}";
+      polygonTemplate.tooltipText = "{name} :"
+      console.log(data["{name}"])
+
       polygonTemplate.polygon.fillOpacity = 0.6;
       
       
-      // Create hover state and set alternative fill color
-      var hs = polygonTemplate.states.create("hover");
-      hs.properties.fill = chart.colors.getIndex(0);
-      //jaksjsakjakj
       polygonTemplate.fill = chart.colors.getIndex(0);
-polygonTemplate.nonScalingStroke = true;
+       polygonTemplate.nonScalingStroke = true;
 
 // Hover state
 var hs = polygonTemplate.states.create("hover");
 hs.properties.fill = am4core.color("#367B25");
 
- // end am4core.ready()
-/*var usaSeries = chart.series.push(new am4maps.MapPolygonSeries());
-usaSeries.geodata = am4geodata_usaLow;
-
-var usPolygonTemplate = usaSeries.mapPolygons.template;
-usPolygonTemplate.tooltipText = "{name}";
-usPolygonTemplate.fill = chart.colors.getIndex(1);
-usPolygonTemplate.nonScalingStroke = true;
-
-// Hover state
-var hs = usPolygonTemplate .states.create("hover");
-hs.properties.fill = am4core.color("#367B25");*/
       
     
       }); // end am4core.ready() 
@@ -185,7 +214,7 @@ var mortes = 0;
        i-=7;
     }
 
-   var op ='';
+   var op ='&nbsp;&nbsp;&nbsp;&nbsp<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"><br><ul class="list-group">';
   
 
   $.each(data, function (key, entry) {
@@ -196,11 +225,7 @@ var mortes = 0;
     var d = data[key][data[key].length -1]["confirmed"];
     var b = data[key][data[key].length -1]["recovered"];
     var c = data[key][data[key].length -1]["deaths"];
-    /*remp+= '<tr>';
-    remp+='<td style="font-size:14px;">'+key+'</td>';
-    remp+='<td style="font-size:14px;">'+d+'</td>';
-    remp+='<td style="font-size:14px;">'+b+'</td>';
-    remp+='<td style="font-size:14px;">'+c+'</td>';*/
+
 
       
 
@@ -209,7 +234,7 @@ var mortes = 0;
 
     //dropdown.append($('<option id="op"></option>').attr('value','').text(key));
     
-    op += '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  id="'+key+'" value="'+key+'" name=type class="check"><label for="'+key+'">'+key+'</label><br>';
+    op += '&nbsp;&nbsp;&nbsp;&nbsp;<li list-group-item><input type="checkbox" id="'+key+'" value="'+key+'" name=type class="check"><label for="'+key+'">'+key+'</label></li>';
     x = currentdate+'/'+ key
     const doc = Docref.doc(x)
     doc.set({
@@ -224,6 +249,7 @@ var mortes = 0;
     
    
   })
+  op += '</ul>';
  
   $('#table').DataTable({
     ajax: { 
@@ -247,9 +273,11 @@ var mortes = 0;
  
    ]
  });
+
  
   
   $("#country").html(op);
+
   for(var i=data["Morocco"].length-1; i>=data["Morocco"].length-35;i++){
     
     $.each(data, function (key, entry) {
@@ -275,102 +303,373 @@ var mortes = 0;
 document.getElementById("hco").innerHTML= confirme;
 document.getElementById("hde").innerHTML =mortes;
 document.getElementById("hre").innerHTML = guerie;
-  //$('#table').append(remp);
-  /*-----------------------------Line Chart --------------------------------*/
- new Chart(document.getElementById("line-chart"), {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{ 
-          data: array_confirmed,
-          label: "deaths",
-          borderColor: "#3e95cd",
-          fill: false
-        }, { 
-          data: array_recovered,
-          label: "recovered",
-          borderColor: "green",
-          fill: false
-        }, { 
-          data: array_deaths,
-          label: "deaths",
-          borderColor: "red",
-          fill: false
-        }
-      ]
-    },
-    options: {
-      title: {
-        display: true,
-        text: 'Covid statistics per weekend(5 weekends)',
-
-        fontSize:15,
-        fontColor :'black'
-
-      }
+ 
+  var date_array = Array();
+  var confirmed_array = Array();
+  var death_array = Array();
+  var recovered_array = Array();
+  var guerie;
+  var con ;
+  var mort;
+  for(var i= data["Morocco"].length -30 ; i< data["Morocco"].length -1 ; i++){
+    guerie=0;
+    con = 0;
+    mort =0;
+    date_array.push(data["Morocco"][i]["date"]);
+    $.each(data, function (key, entry) {
+      guerie+= data[key][i]["recovered"];
+      mort+= data[key][i]["deaths"];
+      con+= data[key][i]["confirmed"];
+    })
+    confirmed_array.push(con);
+    death_array.push(mort);
+    recovered_array.push(guerie)
     }
+  
+  am4core.ready(function() {
+  
+  // Themes begin
+  am4core.useTheme(am4themes_animated);
+  am4core.useTheme(am4themes_kelly);
+  // Themes end
+  
+  var chart = am4core.create("chartdiv1", am4charts.XYChart);
+  
+  var data = [];
+
+  for(var i = 0; i < death_array.length; i++){
+
+    data.push({date:date_array[i], value: confirmed_array[i], value1: death_array[i], value2: recovered_array[i]});
+  }
+  
+  chart.data = data;
+  
+  // Create axes
+var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.title.text = "Dates";
+dateAxis.renderer.grid.template.location = 0;
+dateAxis.renderer.minGridDistance = 60;
+
+
+  
+  var  valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+valueAxis.title.text = "Rate";
+  
+  // Create series confirmed array
+  var series = chart.series.push(new am4charts.LineSeries());
+  series.dataFields.valueY = "value";
+  series.dataFields.dateX = "date";
+  series.name = "Confirmed";
+  series.tooltipText = "{name}: [bold]{valueY}[/]";
+  series.strokeWidth = 2.5;
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.snapToSeries = series;
+  chart.cursor.xAxis = dateAxis;
+    // Create series  deaths 
+  var series1 = chart.series.push(new am4charts.LineSeries());
+  series1.dataFields.valueY = "value2";
+  series1.dataFields.dateX = "date";
+  series1.name = "Recovered";
+  series1.tooltipText = "{name}: [bold]{valueY}[/]";
+  series1.strokeWidth = 2.5;
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.snapToSeries = series1;
+  chart.cursor.xAxis = dateAxis;
+    // Create series recovered
+    var series2 = chart.series.push(new am4charts.LineSeries());
+  series2.dataFields.valueY = "value1";
+  series2.dataFields.dateX = "date";
+  series2.name = "Deaths";
+  series2.tooltipText = "{name}: [bold]{valueY}[/]"
+  series2.strokeWidth = 2.5;
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.snapToSeries = series2;
+  chart.cursor.xAxis = dateAxis;
+  
+  //chart.scrollbarY = new am4core.Scrollbar();
+// Add cursor
+chart.cursor = new am4charts.XYCursor();
+
+// Add legend
+chart.legend = new am4charts.Legend();
+  
+  }); // end am4core.ready()
+
+  $("#log").click(function(){
+
+ 
+  var checkBox = document.getElementById("log");
+  // Get the output text
+
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+
+
+    var date_array = Array();
+    var confirmed_array = Array();
+    var death_array = Array();
+    var recovered_array = Array();
+    var guerie;
+    var con ;
+    var mort;
+    for(var i= data["Morocco"].length -30 ; i< data["Morocco"].length -1 ; i++){
+      guerie=0;
+      con = 0;
+      mort =0;
+      date_array.push(data["Morocco"][i]["date"]);
+      $.each(data, function (key, entry) {
+        guerie+= data[key][i]["recovered"];
+        mort+= data[key][i]["deaths"];
+        con+= data[key][i]["confirmed"];
+      })
+      confirmed_array.push(Math.log(con));
+      death_array.push(Math.log(mort));
+      recovered_array.push(Math.log(guerie))
+      }
+    
+    am4core.ready(function() {
+    
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    am4core.useTheme(am4themes_kelly);
+    // Themes end
+    
+    var chart = am4core.create("chartdiv1", am4charts.XYChart);
+    
+    var data = [];
+  
+    for(var i = 0; i < death_array.length; i++){
+  
+      data.push({date:date_array[i], value: confirmed_array[i], value1: death_array[i], value2: recovered_array[i]});
+    }
+    
+    chart.data = data;
+    
+    // Create axes
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+  
+  dateAxis.title.text = "Dates";
+  dateAxis.renderer.grid.template.location = 0;
+  dateAxis.renderer.minGridDistance = 60;
+  
+  
+    
+    var  valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  valueAxis.title.text = "Rate";
+    
+    // Create series confirmed array
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.dateX = "date";
+    series.name = "Confirmed";
+    series.tooltipText = "{name}: [bold]{valueY}[/]";
+    series.strokeWidth = 2.5;
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.snapToSeries = series;
+    chart.cursor.xAxis = dateAxis;
+      // Create series  deaths 
+    var series1 = chart.series.push(new am4charts.LineSeries());
+    series1.dataFields.valueY = "value2";
+    series1.dataFields.dateX = "date";
+    series1.name = "Recovered";
+    series1.tooltipText = "{name}: [bold]{valueY}[/]";
+    series1.strokeWidth = 2.5;
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.snapToSeries = series1;
+    chart.cursor.xAxis = dateAxis;
+      // Create series recovered
+      var series2 = chart.series.push(new am4charts.LineSeries());
+    series2.dataFields.valueY = "value1";
+    series2.dataFields.dateX = "date";
+    series2.name = "Deaths";
+    series2.tooltipText = "{name}: [bold]{valueY}[/]"
+    series2.strokeWidth = 2.5;
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.snapToSeries = series2;
+    chart.cursor.xAxis = dateAxis;
+    
+    //chart.scrollbarY = new am4core.Scrollbar();
+  // Add cursor
+  chart.cursor = new am4charts.XYCursor();
+  
+  // Add legend
+  chart.legend = new am4charts.Legend();
+    
+    }); // end am4core.ready()
+
+  } else {
+
+ 
+
+  var date_array = Array();
+  var confirmed_array = Array();
+  var death_array = Array();
+  var recovered_array = Array();
+  var guerie;
+  var con ;
+  var mort;
+  for(var i= data["Morocco"].length -30 ; i< data["Morocco"].length -1 ; i++){
+    guerie=0;
+    con = 0;
+    mort =0;
+    date_array.push(data["Morocco"][i]["date"]);
+    $.each(data, function (key, entry) {
+      guerie+= data[key][i]["recovered"];
+      mort+= data[key][i]["deaths"];
+      con+= data[key][i]["confirmed"];
+    })
+    confirmed_array.push(con);
+    death_array.push(mort);
+    recovered_array.push(guerie)
+    }
+  
+  am4core.ready(function() {
+  
+  // Themes begin
+  am4core.useTheme(am4themes_animated);
+  am4core.useTheme(am4themes_kelly);
+  // Themes end
+  
+  var chart = am4core.create("chartdiv1", am4charts.XYChart);
+  
+  var data = [];
+
+  for(var i = 0; i < death_array.length; i++){
+
+    data.push({date:date_array[i], value: confirmed_array[i], value1: death_array[i], value2: recovered_array[i]});
+  }
+  
+  chart.data = data;
+  
+  // Create axes
+  var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+
+dateAxis.title.text = "Dates";
+dateAxis.renderer.grid.template.location = 0;
+dateAxis.renderer.minGridDistance = 60;
+
+
+  
+  var  valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+valueAxis.title.text = "Rate";
+  
+  // Create series confirmed array
+  var series = chart.series.push(new am4charts.LineSeries());
+  series.dataFields.valueY = "value";
+  series.dataFields.dateX = "date";
+  series.name = "Confirmed";
+  series.tooltipText = "{name}: [bold]{valueY}[/]";
+  series.strokeWidth = 2.5;
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.snapToSeries = series;
+  chart.cursor.xAxis = dateAxis;
+    // Create series  deaths 
+  var series1 = chart.series.push(new am4charts.LineSeries());
+  series1.dataFields.valueY = "value2";
+  series1.dataFields.dateX = "date";
+  series1.name = "Recovered";
+  series1.tooltipText = "{name}: [bold]{valueY}[/]";
+  series1.strokeWidth = 2.5;
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.snapToSeries = series1;
+  chart.cursor.xAxis = dateAxis;
+    // Create series recovered
+    var series2 = chart.series.push(new am4charts.LineSeries());
+  series2.dataFields.valueY = "value1";
+  series2.dataFields.dateX = "date";
+  series2.name = "Deaths";
+  series2.tooltipText = "{name}: [bold]{valueY}[/]"
+  series2.strokeWidth = 2.5;
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.snapToSeries = series2;
+  chart.cursor.xAxis = dateAxis;
+  
+  //chart.scrollbarY = new am4core.Scrollbar();
+// Add cursor
+chart.cursor = new am4charts.XYCursor();
+
+// Add legend
+chart.legend = new am4charts.Legend();
+  
+  }); // end am4core.ready()
+}
+})
+
+
+
+
+
+const url2 = 'https://covid19-server.chrismichael.now.sh/api/v1/FatalityRateByAge';
+$.getJSON(url2, function (data2) {
+console.log(data2.table[0]["Age"])
+am4core.ready(function() {
+
+  // Themes begin
+  am4core.useTheme(am4themes_animated);
+  // Themes end
+  
+  // Create chart instance
+  var chart = am4core.create("doughnut-chart", am4charts.PieChart);
+  
+  // Add data
+  chart.data = [ {
+    "country": data2.table[0]["Age"],
+    "litres": data2.table[0]["DeathRateAllCases"]
+  }, {
+    "country": data2.table[1]["Age"],
+    "litres":data2.table[1]["DeathRateAllCases"]
+  }, {
+    "country": data2.table[2]["Age"],
+    "litres": data2.table[2]["DeathRateAllCases"]
+  },{
+  "country": data2.table[3]["Age"],
+  "litres": data2.table[3]["DeathRateAllCases"]
+  },
+  {
+    "country": data2.table[4]["Age"],
+    "litres": data2.table[4]["DeathRateAllCases"]
+    }];
+  
+  // Add and configure Series
+  var pieSeries = chart.series.push(new am4charts.PieSeries());
+  pieSeries.dataFields.value = "litres";
+  pieSeries.dataFields.category = "country";
+  pieSeries.slices.template.stroke = am4core.color("#fff");
+  pieSeries.slices.template.strokeWidth = 1;
+  pieSeries.slices.template.strokeOpacity = 3;
+  
+  // This creates initial animation
+  pieSeries.hiddenState.properties.opacity = 1;
+  pieSeries.hiddenState.properties.endAngle = -90;
+  pieSeries.hiddenState.properties.startAngle = -90;
+  
   });
 
+});
+});
+
+});
 
 
-/*new Chart(document.getElementById("doughnut-chart"), {
-  type: 'pie',
-  data: {
-    labels: ['recovered','deaths','confirmed'],
-    datasets: [
-      {
-        label: "Population (millions)",
-        backgroundColor: ["green", "red",""],
-        data: [guerie,mortes,confirme]
-      }
-    ],
-    
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'statistics world ',
-      
+
+//********** */ Searching **************///
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("country");
+  a = div.getElementsByTagName("li");
+
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
     }
   }
-});*/
-am4core.useTheme(am4themes_animated);
-
-var chart = am4core.create("doughnut-chart", am4charts.PieChart3D);
-chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-chart.data = [
-  {
-    country: "confirmed",
-    litres: confirme
-  },
-  {
-    country: "deaths",
-    litres: mortes
-  },
-  {
-    country: "recovered",
-    litres: guerie
-  }
-];
-
-chart.innerRadius = am4core.percent(120);
-chart.depth = 5;
-
-/*chart.legend = new am4charts.Legend();
-chart.legend.position = "right";*/
-
-var series = chart.series.push(new am4charts.PieSeries3D());
-series.dataFields.value = "litres";
-series.dataFields.depthValue = "litres";
-series.dataFields.category = "country";
-series.slices.template.cornerRadius = 50;
-series.colors.step = 5;
-
-});
-
-});
-
+}
 
 
 
@@ -404,6 +703,7 @@ if(favorite.length == 0){
 
 const url = 'https://pomber.github.io/covid19/timeseries.json';
 document.getElementById("div1").style.display = 'none';
+document.getElementById("graph").style.display = 'none';
 document.getElementById("div2").style.display = 'inline';
 document.getElementById("chart").style.display = 'none';
 labels_date =new Array();
@@ -429,11 +729,6 @@ $.getJSON(url, function (data){
         array_deaths1.push(deaths_country);
         var recovered_country = element["recovered"];
         array_recovered1.push(recovered_country);
-        /*remp1+= '<tr>';
-        remp1+='<td style="font-size:14px;">'+confirmed_country+'</td>';
-        remp1+='<td style="font-size:14px;">'+deaths_country+'</td>';
-        remp1+='<td style="font-size:14px;">'+recovered_country+'</td>';
-        remp1+='<td style="font-size:14px;">'+date_country+'</td>';*/
         });
     
   
@@ -444,51 +739,6 @@ $.getJSON(url, function (data){
         array_deaths1=[];
         array_recovered1 =[];
 
-        //$('#div3').append(remp1+'</tbody></table></div><br><br></br>');
-   
-      
-
-        /*new Chart(document.getElementById("linechart"), {
-          type: 'line',
-          data: {
-            labels: array_date,
-            datasets: [{ 
-                data: array_confirmed1,
-                label: "deaths",
-                borderColor: "#3e95cd",
-                fill: false
-              }, /*{ 
-                data: array_recovered1,
-                label: "recovered",
-                borderColor: "red",
-                fill: false
-              }, { 
-                data: array_deaths1,
-                label: "deaths",
-                borderColor: "green",
-                fill: false
-              }
-            ]
-          },
-          options: {
-            scales: {
-              xAxes: [{
-               ticks: {
-                      display: false
-               }
-             }]
-           },
-            title: {
-              display: true,
-              text: 'Covid statistics per weekend(5 weekends)',
-      
-              fontSize:15,
-              fontColor :'black'
-      
-            }
-          }
-        });*/
-        
 });
 
 var dynamicColors = function() {
@@ -652,54 +902,8 @@ array_deaths1 = [];
 array_recovered1 =[];
 }) ;
 } 
-/*var tab =Array();
-var array = Array();
-$.each($("input[name='type']:checked"), function(){
-  tab.push($(this).val());
-});
-tab.forEach(element => {
- 
-const url = 'https://pomber.github.io/covid19/timeseries.json';
-$.getJSON(url, function (data) {
-  
-  array.push({"country":element,"confirmed": data[element][data[element].length-1]["confirmed"]})
-  console.log(array)
-});
-});
 
-var chart = am4core.create("chartdiv4", am4charts.PieChart);
-
-
-// Add data
-chart.data = array
-
-// Add and configure Series
-var pieSeries = chart.series.push(new am4charts.PieSeries());
-pieSeries.dataFields.value = "confirmed";
-pieSeries.dataFields.category = "country"; 
-
-
-array = [];
-tab =[];*/
       });  
-
-
-/*remp1 ='';
-;
-$.getJSON(url, function (data){
-    data[selected_value].forEach(element => {
-        var date_country = element["date"];
-        var confirmed_country = element["confirmed"];
-        var deaths_country = element["deaths"];
-        var recovered_country = element["recovered"];
-        remp1+= '<tr>';
-    remp1+='<td style="font-size:14px;">'+confirmed_country+'</td>';
-    remp1+='<td style="font-size:14px;">'+deaths_country+'</td>';
-    remp1+='<td style="font-size:14px;">'+recovered_country+'</td>';
-    remp1+='<td style="font-size:14px;">'+date_country+'</td>';
-    });
-    $('#table2').append(remp1);
-});*/
 
 
 
