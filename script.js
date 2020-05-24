@@ -1,10 +1,35 @@
 
 $(document).ready(function(){
-
+  swal({
+    title: "General Precautions",
+    text: "Don't Touch Your mo",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((ok1) => {
+    if (ok1) {
+      swal({
+        title: "General Precautions",
+        text: "Wach your hands evry time",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+      })
+    } else {
+      swal("Welcome to your website");
+    }
+  });
   var data_affected = Array();
   const url = 'https://pomber.github.io/covid19/timeseries.json';
   $.getJSON(url, function (data) {
-   
+    var today = new Date();
+  var a = data["Italy"][0]["date"].split("-");
+  var date1 = new Date(a);
+  
+  const diffDays = Math.abs(today.getDate() - date1.getDate())+Math.abs(30*(today.getMonth()-date1.getMonth()))+ Math.abs(365*(today.getFullYear() - date1.getFullYear()));
+  document.getElementById("days").innerHTML = diffDays+'  days';
+  startTime();
 
     document.getElementById("lastupdate").innerHTML = 'Last Update '+data["US"][data["US"].length-1]["date"];
 
@@ -28,52 +53,11 @@ $(document).ready(function(){
       var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
  
       polygonSeries.exclude = ["AQ"];
-      var data_sup = Array();
-      $.each(data, function (key, entry) {
-        if(data[key][data[key].length-1]["confirmed"]>100000){
-          data_sup.push({title:key, id:key,color: chart.colors.getIndex(2),customData:data[key][data[key].length-1]["confirmed"] })
-        }
-      })
-      console.log(data_sup)
-
-      var groupData = [
-        {
-          "name": "EU member before 2004",
-          "color": chart.colors.getIndex(1),
-          "data": data_sup
-        
-        }
-      ]
 
       // This array will be populated with country IDs to exclude from the world series
       var excludedCountries = ["AQ"];
 
-      // Create a series for each group, and populate the above array
-      groupData.forEach(function(group) {
-        var series = chart.series.push(new am4maps.MapPolygonSeries());
-        series.name = group.name;
-        series.useGeodata = true;
-        var includedCountries = [];
-        group.data.forEach(function(country) {
-          includedCountries.push(country.id);
-          excludedCountries.push(country.id);
-        });
-        series.include = includedCountries;
-        console.log(series.include)
-        series.fill = am4core.color(group.color);
-        series.setStateOnChildren = true;
-        series.calculateVisualCenter = true;
-        var mapPolygonTemplate = series.mapPolygons.template;
-        mapPolygonTemplate.fill = am4core.color(group.color);
-        mapPolygonTemplate.fillOpacity = 0.8;
-        mapPolygonTemplate.nonScalingStroke = true;
-        mapPolygonTemplate.tooltipPosition = "fixed"
-        var hoverState = mapPolygonTemplate.states.create("hover");
-        hoverState.properties.fill = am4core.color("#CC0000");
-        mapPolygonTemplate.tooltipText = "{title} joined EU at {customData}"; 
-        series.data = JSON.parse(JSON.stringify(group.data));
-        console.log(series.data)
-      });
+    
 
 
 
@@ -97,7 +81,6 @@ $(document).ready(function(){
         if(ev.target.dataItem.dataContext.name == "United States"){
           ev.target.dataItem.dataContext.name = "US";
         }
-        console.log(ev.target.dataItem.dataContext.name)
         
         array_confirmed_ev = [];
         array_deaths_ev =[];
@@ -116,7 +99,7 @@ $(document).ready(function(){
   
         }
 
-        console.log(array_confirmed_ev);
+ 
           
         //})
   
@@ -168,11 +151,9 @@ $(document).ready(function(){
         }
       
       });
-    
-    
-      polygonTemplate.tooltipText = "{name} :"
-      console.log(data["{name}"])
 
+
+      polygonTemplate.tooltipText = "{name}: {pays_hover}";
       polygonTemplate.polygon.fillOpacity = 0.6;
       
       
@@ -182,6 +163,7 @@ $(document).ready(function(){
 // Hover state
 var hs = polygonTemplate.states.create("hover");
 hs.properties.fill = am4core.color("#367B25");
+
 
       
     
@@ -216,7 +198,6 @@ var mortes = 0;
 
    var op ='&nbsp;&nbsp;&nbsp;&nbsp<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"><br><ul class="list-group">';
   
-
   $.each(data, function (key, entry) {
   
     guerie = guerie + data[key][data[key].length -1]["recovered"];
@@ -225,9 +206,6 @@ var mortes = 0;
     var d = data[key][data[key].length -1]["confirmed"];
     var b = data[key][data[key].length -1]["recovered"];
     var c = data[key][data[key].length -1]["deaths"];
-
-
-      
 
       a.push(key)
 
@@ -278,31 +256,13 @@ var mortes = 0;
   
   $("#country").html(op);
 
-  for(var i=data["Morocco"].length-1; i>=data["Morocco"].length-35;i++){
-    
-    $.each(data, function (key, entry) {
-     label_confirmed+=data[key][i]["confirmed"];
-     label_deaths += data[key][i]["deaths"];
-     label_recovered+= data[key][i]["recovered"];
-
-     
-    });
-    array_confirmed.unshift(label_confirmed)
-    array_deaths.unshift(label_deaths);
-    array_recovered.unshift(label_recovered);
-    label_confirmed = 0;
-    label_deaths =0;
-    label_recovered= 0;
-    i-=7;
-}
-
-
-
-
-
 document.getElementById("hco").innerHTML= confirme;
 document.getElementById("hde").innerHTML =mortes;
 document.getElementById("hre").innerHTML = guerie;
+document.getElementById("Recovery_Rate").innerHTML = ((guerie/(mortes+guerie+confirme))*100).toFixed(2)+' %';
+document.getElementById("Death_Rate").innerHTML = ((mortes/(mortes+guerie+confirme))*100).toFixed(2)+' %';
+document.getElementById("Confirmed_Rate").innerHTML = ((confirme/(mortes+guerie+confirme))*100).toFixed(2)+' %';
+
  
   var date_array = Array();
   var confirmed_array = Array();
@@ -311,7 +271,7 @@ document.getElementById("hre").innerHTML = guerie;
   var guerie;
   var con ;
   var mort;
-  for(var i= data["Morocco"].length -30 ; i< data["Morocco"].length -1 ; i++){
+  for(var i= 0 ; i< data["Italy"].length  ; i++){
     guerie=0;
     con = 0;
     mort =0;
@@ -341,6 +301,7 @@ document.getElementById("hre").innerHTML = guerie;
 
     data.push({date:date_array[i], value: confirmed_array[i], value1: death_array[i], value2: recovered_array[i]});
   }
+
   
   chart.data = data;
   
@@ -413,7 +374,7 @@ chart.legend = new am4charts.Legend();
     var guerie;
     var con ;
     var mort;
-    for(var i= data["Morocco"].length -30 ; i< data["Morocco"].length -1 ; i++){
+    for(var i= 0 ; i< data["Morocco"].length  ; i++){
       guerie=0;
       con = 0;
       mort =0;
@@ -509,7 +470,7 @@ chart.legend = new am4charts.Legend();
   var guerie;
   var con ;
   var mort;
-  for(var i= data["Morocco"].length -30 ; i< data["Morocco"].length -1 ; i++){
+  for(var i= 0 ; i< data["Morocco"].length  ; i++){
     guerie=0;
     con = 0;
     mort =0;
@@ -602,7 +563,7 @@ chart.legend = new am4charts.Legend();
 
 const url2 = 'https://covid19-server.chrismichael.now.sh/api/v1/FatalityRateByAge';
 $.getJSON(url2, function (data2) {
-console.log(data2.table[0]["Age"])
+
 am4core.ready(function() {
 
   // Themes begin
@@ -671,11 +632,25 @@ function filterFunction() {
   }
 }
 
-
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('Started').innerHTML =
+   h + "   :   " + m + "  :  " + s;
+  var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};
+  return i;
+}
 
  
 
-$("button").click(function(){
+$("#buttonSumbit").click(function(){
 
   
   favorite =[];
@@ -697,7 +672,7 @@ if(favorite.length == 0){
 
 }else{
 
-  document.getElementById('home').style.display='inline';
+
 
 
 
@@ -709,6 +684,37 @@ document.getElementById("chart").style.display = 'none';
 labels_date =new Array();
 labels_date =[]
 $.getJSON(url, function (data){
+data_pourcent = [];// va stocker les pys selectionnees et leurs dernieres valeurs d'infections
+for(var i =0;i<favorite.length  ; i++){
+  
+  data_pourcent.push({country:favorite[i], litres: data[favorite[i]][data[favorite[i]].length -1]["confirmed"]})
+}
+am4core.ready(function() {
+
+  // Themes begin
+  am4core.useTheme(am4themes_animated);
+  // Themes end
+  
+  // Create chart instance
+  var chart = am4core.create("chartdiv4", am4charts.PieChart);
+  
+  // Add data
+  chart.data = data_pourcent;
+  
+  // Add and configure Series
+  var pieSeries = chart.series.push(new am4charts.PieSeries());
+  pieSeries.dataFields.value = "litres";
+  pieSeries.dataFields.category = "country";
+  pieSeries.slices.template.stroke = am4core.color("#fff");
+  pieSeries.slices.template.strokeWidth = 1;
+  pieSeries.slices.template.strokeOpacity = 3;
+  
+  // This creates initial animation
+  pieSeries.hiddenState.properties.opacity = 1;
+  pieSeries.hiddenState.properties.endAngle = -90;
+  pieSeries.hiddenState.properties.startAngle = -90;
+}) ;
+
   
   for(var i=0; i<=data["Morocco"].length-1;i++){
     label_date1 = data["Morocco"][i]["date"];
@@ -900,7 +906,11 @@ chart.update();
 array_confirmed1=[];
 array_deaths1 = [];
 array_recovered1 =[];
-}) ;
+
+  
+  });
+
+
 } 
 
       });  

@@ -1,18 +1,14 @@
-body {
-    /*background: #e8cbc0;
-    background: -webkit-linear-gradient(to right, #81381d, #061349);
-    background: linear-gradient(to right, #e8cbc0, #636fa4);*/
-    background: black;
-}
 
-  .dropdown-menu {
+
+.dropdown-menu {
     height: auto;
     max-height: 300px;
     overflow-x: hidden;
 }
 #chartdiv {
   width: 100%;
-  height: 10vh;
+  height: 550px;
+
 }
 #chartdiv4{
   height: 300px;
@@ -25,4 +21,31 @@ input[type="checkbox"]{
   height: 15px; /*Desired height*/
   cursor: pointer;
 
+}
+#card1{
+  margin-top: 40px;
+}
+#chartdiv4{
+  height: 430px;
+}
+em{
+  font-size: large;
+  font-weight: bold;
+}
+#Generalite{
+  height: 400px;
+}
+#generale{
+  height: 150px;
+  text-align: center;
+  font-weight: bold;
+  font-size: x-large;
+  margin-top: 10px;
+}
+.footer-bottom{
+  text-align: center; 
+  font-size: 15px;
+  height: 30px;
+  color: whitesmoke;
+  background-color: black;
 }

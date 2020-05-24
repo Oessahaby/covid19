@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Covide 19</title>
 
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" id="foo"></script>
 
 
 <!--                        Map  Scripts            -->
@@ -41,178 +41,246 @@
  
     
 </head>
-<body>
-    
-   <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-             
-                    <form >
-              
-                        
-                
-                <div class="dropdown show">
-                    
-                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:200px ;">
-                      Select countries
-                    </a>
-                    
-                    <div class="dropdown-menu " aria-labelledby="dropdownMenuLink" id="country" style="width:200px;">
-                        
-                      
-                   
 
-                 
-             
-              
-                </div>
-                
-                <button type="button" id="button" class="btn btn-light">submit</button>
-               
-                
-                <img src="img/img1.PNG" alt="Flowers in Chania" style="width: 100px; height: 40px; margin-left:400px" >
-                <input type="button" id="home" value="HOME" class="btn btn-light" style="margin-left:600px ; display: none;"onclick="location.reload();" ></input>
-              
-                
-            </div>
-                        
-            
-              
-            </form>
-              
-
-        
-          
-        </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <img src="img/img1.PNG" alt="Flowers in Chania" style="width: 150px; height: 40px;" >
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html" style="font-weight: bold; font-size: medium;">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.who.int/home" style="font-weight: bold ;font-size: medium;" target="_blank">Site WHO</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
     
 
-        
-
-        </nav>
   
         
         <!-----------------------------------------------------WELCOME DASHBOARD --------------------------------------------------->
 
-
-
-  <div id="div1" class="container">
-    
-      <div class="row">
-        <div class="col-md-9 col-sm-9" >
-           
-
-            <div _ngcontent-ukn-c28="" class="row ng-tns-c28-0">
+        <body>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-row">
+                                
+                                <div class="col-15 text-right align-self-center">
+                                    <div class="m-l-10 ">
+                                        <form >
+      
                 
-                <div _ngcontent-ukn-c28="" class="col-xl-3 col-md-9 col-sm-9 col-9 ng-tns-c28-0">
-                    <div _ngcontent-ukn-c28="" class="card-box ng-tns-c28-0">
-                        <h4 _ngcontent-ukn-c28="" class="header-title m-0 text-md-left text-center ng-tns-c28-0">Infections</h4>
-                        <div _ngcontent-ukn-c28="" class="topBoxes ng-tns-c28-0">
-                            <div _ngcontent-ukn-c28="" class="fa-3x text-center ng-tns-c28-0 d-none">
-                            <i _ngcontent-ukn-c28="" class="fas fa-circle-notch fa-spin m-2 ng-tns-c28-0"></i>
-                              </div>
-                              <div _ngcontent-ukn-c28="" class="topBoxesDetails text-md-right text-center ng-tns-c28-0">
-                                  <span _ngcontent-ukn-c28="" class="badge badge-blue badge-pill float-md-left m-md-2 mt-2 ng-tns-c28-0">
-                                      <i _ngcontent-ukn-c28="" class="mdi mdi-trending-up ng-tns-c28-0">
-                                          </i>
-                                      </span>
-                                      <h2 _ngcontent-ukn-c28="" id="hco" class="font-weight-normal ng-tns-c28-0"> </h2>
-                                  </div>
-                                  <div _ngcontent-ukn-c28="" class="progress progress-bar-alt-blue progress-sm m-0 ng-tns-c28-0">
-                                      <div _ngcontent-ukn-c28="" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-blue ng-tns-c28-0" style="width: 100%;">
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                     
-                    </div>
-                      <div _ngcontent-ukn-c28="" class="col-xl-3 col-md-9 col-9 col-sm-9 ng-tns-c28-0">
-                          <div _ngcontent-ukn-c28="" class="card-box ng-tns-c28-0">
-                              <h4 _ngcontent-ukn-c28="" class="header-title m-0 text-md-left text-center ng-tns-c28-0">Deaths</h4>
-                              <div _ngcontent-ukn-c28="" class="topBoxes ng-tns-c28-0">
-                                  <div _ngcontent-ukn-c28="" class="fa-3x text-center ng-tns-c28-0 d-none">
-                                      <i _ngcontent-ukn-c28="" class="fas fa-circle-notch fa-spin m-2 ng-tns-c28-0">
-                                          </i>
-                                      </div>
-                                      <div _ngcontent-ukn-c28="" class="topBoxesDetails text-md-right text-center ng-tns-c28-0">
-                                          <span _ngcontent-ukn-c28="" class="badge badge-danger badge-pill float-md-left m-md-3 mt-2 ng-tns-c28-0"><i _ngcontent-ukn-c28="" class="mdi mdi-trending-up ng-tns-c28-0"></i>
-                                          </span><h2 _ngcontent-ukn-c28="" id="hde" class="font-weight-normal ng-tns-c28-0"> </h2>
-                                      </div>
-                                      <div _ngcontent-ukn-c28="" class="progress progress-bar-alt-danger progress-sm m-0 ng-tns-c28-0">
-                                          <div _ngcontent-ukn-c28="" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-danger ng-tns-c28-0" style="width: 100%;"></div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div _ngcontent-ukn-c28="" class="col-xl-3 col-md-9 col-9 col-sm-9 ng-tns-c28-0">
-                              <div _ngcontent-ukn-c28="" class="card-box ng-tns-c28-0">
-                                  <h4 _ngcontent-ukn-c28="" class="header-title m-0 text-md-left text-center ng-tns-c28-0">Recoveries</h4>
-                                  <div _ngcontent-ukn-c28="" class="topBoxes ng-tns-c28-0">
-                                      <div _ngcontent-ukn-c28="" class="fa-3x text-center ng-tns-c28-0 d-none">
-                                      <i _ngcontent-ukn-c28="" class="fas fa-circle-notch fa-spin m-2 ng-tns-c28-0"></i>
-                                      </div>
-                                      <div _ngcontent-ukn-c28="" class="topBoxesDetails text-md-right text-center ng-tns-c28-0">
-                                          <span _ngcontent-ukn-c28="" class="badge badge-success badge-pill float-md-left m-md-3 mt-2 ng-tns-c28-0">
-                                         
-                                              </span>
-                                              <h2 _ngcontent-ukn-c28="" id="hre" class="font-weight-normal ng-tns-c28-0">  </h2>
-                                          </div>
-                                          <div _ngcontent-ukn-c28="" class="progress progress-bar-alt-success progress-sm m-0 ng-tns-c28-0">
-                                              <div _ngcontent-ukn-c28="" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-success ng-tns-c28-0" style="width: 100%;"></div>
-                                              
-                                            </div>
+        
+                                            <div class="dropdown show">
                                             
-                                      </div>
-                                  </div>
-                                
-                                </div>
-                                
-                                
-                                
+                                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:200px ;">
+                                              Select countries
+                                            </a>
+                                            
+                                            <div class="dropdown-menu " aria-labelledby="dropdownMenuLink" id="country" style="width:200px;">
+                                      
+                                        </div>
+                                        <input type="button" id="buttonSumbit" class="btn btn-light" value="submit"></input>
+                                        
+                                       
+
+                                    </div>
+                                    
+                                        </form>
+                                </div>                                                                                                                
+                            </div>
+                            
+                            <div class="progress mt-3" style="height:3px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 100%;" aria-valuenow="48" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div><!--end card-body-->
+                    </div><!--end card-->
+                </div><!--end col-->
+    </div>
+                <div class="col-xl-9">
+                    <div class="row">
+                        
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex flex-row">
+                                        <div class="col-3 align-self-center">
+                                            <div class="round bg-success">
+                                                <span style="color:white"><i class="fas fa-syringe" aria-hidden="true"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-9 align-self-center text-right">
+                                            <div class="m-l-10">
+                                                <h3 class="mt-0" id="hre"></h3>
+                                            <p class="mb-0 text-muted">Recovered</p>
+                                            </div>
+                                        </div>                                                                                          
+                                    </div>
+                                    <div class="progress mt-3" style="height:3px;">
+                                        <div class="progress-bar  bg-success" role="progressbar" style="width: 100%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div><!--end col-->
+
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex flex-row">
+                                        <div class="col-3 align-self-center">
+                                            <div class="round bg-warning">
+                                                <span style="color:white"><i class="fas fa-viruses" aria-hidden="true"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-9 text-right align-self-center">
+                                            <div class="m-l-10 ">
+                                                <h3 class="mt-0" id="hco"></h3>
+                                                <p class="mb-0 text-muted">Infections</p>
+                                            </div>
+                                        </div>                                                                                                                
+                                    </div>
+                                    <div class="progress mt-3" style="height:3px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 100%;" aria-valuenow="48" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div><!--end col-->
+
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="search-type-arrow"></div>
+                                    <div class="d-flex flex-row">
+                                        <div class="col-3 align-self-center">
+                                            <div class="round " style="background-color: #DC143C;">
+                                               <span style="color:white"> <i class="fas fa-skull-crossbones" aria-hidden="true"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-9 align-self-center text-right">
+                                            <div class="m-l-10 ">
+                                                <h3 class="mt-0" id="hde"></h3>
+                                            <p class="mb-0 text-muted">Deaths</p>
+                                            </div>
+                                        </div>                                                                
+                                    </div>
+                                    <div class="progress mt-3" style="height:3px;">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="61" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    
+                </div><!--end col-->
+
+
             </div>
-        </div>
-
-        </div>
+        
         <br><br><br>
-
-
-        <div class="card" >
+<div id="div1">
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                 <div class="card" id="card1">
 
             <div class="card-body">
-        <div id="chartdiv" style="height: 500px;"></div>
+        <div id="chartdiv"></div>
             </div>
         </div>
-        
-        <div class="row">
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <p style="font-size: 20px; color: black;">Countries statistics</p>
+                <div class="card" >
 
-        <canvas id="chart" ></canvas>
-
-    </div>
-
-        <br>
-        <br>
-        
-        <!--<div class="row">-->
+                    <div class="card-body">
+                <div style="height:550px;overflow:auto;">
     
-        <!--<div class="col-md-6">-->
-            <p style="font-size: 20px; color: black;">Countries statistics</p>
-            <div style="height:550px;overflow:auto;">
-
-                <table class="table table-hover table-light" id="table" style="text-align: center; border: 2px solid white; background-color:aquamarine;">
-                    <thead >
-                      <tr>
-                        <th scope="col" style="color:aqua; font-size:14px; background-color: black;">Drapeau</th>
-                        <th scope="col" style="color:aqua; font-size:14px;background-color: black;">COUNTRY</th>
-                        <th scope="col"style="color:aqua;font-size:14px; background-color: black;">CONFIRMED</th>
-                        <th scope="col"style="color:aqua;font-size:14px;background-color: black;">DEATHS</th>
-                        <th scope="col"style="color:aqua;font-size:14px;background-color: black;">RECOVERED</th>
-        
-                      </tr>
-                    </thead>
-                    <tbody >
+                    <table class="table table-hover table-light" id="table" style="text-align: center; border: 2px solid white; background-color:aquamarine;">
+                        <thead >
+                          <tr>
+                            <th scope="col" style="color:aqua; font-size:14px; background-color: black;">Drapeau</th>
+                            <th scope="col" style="color:aqua; font-size:14px;background-color: black;">COUNTRY</th>
+                            <th scope="col"style="color:aqua;font-size:14px; background-color: black;">CONFIRMED</th>
+                            <th scope="col"style="color:aqua;font-size:14px;background-color: black;">DEATHS</th>
+                            <th scope="col"style="color:aqua;font-size:14px;background-color: black;">RECOVERED</th>
+            
+                          </tr>
+                        </thead>
+                        <tbody >
+                        
+                        </tbody>
+                      </table>
+                </div>
+                    </div>
                     
-                    </tbody>
-                  </table>
+        </div>
+            </div>
+        </div>
+
+<div class="row">
+  <div class="col-md-6 col-sm-6">    
+      <canvas id="chart" ></canvas>
+</div>
+<!-- //////////////////////////// GENERALITY /////////////////////////////-->
+<div class="col-md-6 col-sm-6">    
+    <div class="card" id="Generalite">
+        <div class="card-body">
+            <em >Generality</em>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-6">    
+                    <div class="card">
+                        <div class="card-body"  id="generale">
+                            <p>Recovery Rate</p>
+                            <p id="Recovery_Rate" style="color: green;"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-6">    
+                    <div class="card">
+                        <div class="card-body" id="generale">
+                            <p>Death Rate</p>
+                            <p id="Death_Rate" style="color: red;"></p>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-6" col-6>    
+                    <div class="card">
+                        <div class="card-body" id="generale">
+                            <p>Confirmed Rate</p>
+                            <p id="Confirmed_Rate" style="color: orangered;"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-6" col-6>    
+                    <div class="card">
+                        <div class="card-body" id="generale">
+                            <p>Epedime Started</p>
+                            <p id="days"></p>
+                            <p id="Started" style="font-weight:normal;"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-    </div>
+</div>
+      
+</div>
+</div>
+<br>
+<br>
     <div class="row" id="graph">
     <div class="col-md-6 col-sm-6" >
         <div class="card" >
@@ -245,30 +313,66 @@
 <div id="div2" style="display: none;">
 
 
-        <div class="container" >
-    <h3 id="h33" style="margin-left:40%;">Graphs Comparaison Selected Country</h3>
+
     <div class="row">
-    <div class="col-md-6 col-sm-6" ><canvas id="linechart" height="180px"></canvas></div>
-    <div class="col-md-6 col-sm-6" ><canvas id="linechart2" height="180px"></canvas></div>
+        
+    <div class="col-md-6 col-sm-6" >
+        <div class="card" >
+            <div class="card-body">
+        <canvas id="linechart" height="180px">
+        </canvas>
+    </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6" >
+        <div class="card" >
+            <div class="card-body">
+        <canvas id="linechart2" height="180px">
+        </canvas>
+            </div>
+            </div>
+    </div>
 </div>
 <div class="row">
-    <div class="col-md-6 col-sm-8" ><canvas id="linechart3" height="180px"></canvas></div>
-    <div class="col-md-6 col-sm-4" ><div id="chartdiv4"></div></div>
+    <div class="col-md-6 col-sm-6" >
+        <div class="card" >
+            <div class="card-body">
+        <canvas id="linechart3" height="180px">
+        </canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6" >
+        <div class="card" >
+            <div class="card-body">
+        <em>Confirmed_Rate' comparaison</em>
+        <div id="chartdiv4">
+        </div>
+            </div>
+        </div>
+    </div>
 </div>
         </div>
-</div>
+
 
    
     
 
+        </body>
 
 
 
+<div class="footer">
+    <div class="footer-bottom">
+    </span>2020 © Created with &#128147; by <a _ngcontent-aoq-c27="" href="https://github.com/Oessahaby">ESSAHABY Othmane</a>
+    <p id="lastupdate" style=" float:right;"></p>
+    </div>
+</div>
 
 
 
-
-<footer _ngcontent-aoq-c27="" class="footer" style="font-size: 15px; background-color: black; color: beige;">
+<!--<footer _ngcontent-aoq-c27="" class="footer" style="font-size: 15px; background-color: black; color: beige;">
     <div _ngcontent-aoq-c27="" class="container-fluid">
         <div _ngcontent-aoq-c27="" class="row">
     <div _ngcontent-aoq-c27="" class="col-md-6"> 2020 © Created with &#128147;
@@ -276,14 +380,14 @@
         </span> by <a _ngcontent-aoq-c27="" href="https://github.com/Oessahaby">ESSAHABY Othmane</a>
         
     </div>
-    <p id="lastupdate" style="font-size: 15px; float:right;"></p>
+   
     
                 </div>
             </div>
             
 
         
-    </footer>
+    </footer>-->
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
     
