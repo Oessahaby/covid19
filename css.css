@@ -27,6 +27,7 @@ input[type="checkbox"]{
 }
 #chartdiv4{
   height: 430px;
+  
 }
 em{
   font-size: large;
@@ -48,4 +49,8 @@ em{
   height: 30px;
   color: whitesmoke;
   background-color: black;
+}
+.swal-wide{
+  width:600px !important;
+  height: 500px !important;
 }
