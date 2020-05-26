@@ -94,6 +94,8 @@ $(document).ready(function(){
       //*****************Fonction afficher la graphe line lorsque on click sur un pays dans la map */
       polygonTemplate.events.on("hit", function(ev) {
         try{
+          document.getElementById("chart").remove();
+          $("#chartV").append(`<canvas id="chart" ></canvas>`)
           $('html,body').animate({
             scrollTop: $("#chart").offset().top},
             'slow');
@@ -237,7 +239,7 @@ var mortes = 0;
   document.getElementById("Death_Rate").innerHTML = ((mortes/(mortes+guerie+confirme))*100).toFixed(2)+' %';
   document.getElementById("Confirmed_Rate").innerHTML = ((confirme/(mortes+guerie+confirme))*100).toFixed(2)+' %';
   /************Datatable **************** */
-  $('#table').DataTable({
+  /*$('#table').DataTable({
     ajax: { 
     url :'https://corona-virus-stats.herokuapp.com/api/v1/cases/countries-search?limit=200',
     dataSrc: 'data.rows',
@@ -258,7 +260,22 @@ var mortes = 0;
  
  
    ]
- });
+ });*/
+ $('#table').DataTable( {
+  ajax: {
+      url: 'https://corona-api.com/countries',
+      dataSrc: 'data'
+  },
+  columns: [
+      { data: 'code',"render": function(data, type, row) {
+          return '<img src="https://www.countryflags.io/'+data+'/flat/32.png">';}
+      },
+      { data: 'name' },
+      { data: 'latest_data.confirmed' },
+      { data: 'latest_data.deaths' }, 
+      { data: 'latest_data.recovered'},
+     ]
+});
 
 
  
@@ -647,7 +664,6 @@ function checkTime(i) {
 }
 /*************LORSQU ON CLICK SUR LE BUTTON SUBMIT  ************* */
 $("#buttonSumbit").click(function(){
-
   favorite =[];
   $('#div3').html('');
    total_array_confirmed = new Array();
@@ -673,7 +689,12 @@ document.getElementById("div1").style.display = 'none';
 document.getElementById("graph").style.display = 'none';
 document.getElementById("div2").style.display = 'inline';
 document.getElementById("chart").style.display = 'none';
-labels_date =new Array();
+document.getElementById("linechart").remove();
+document.getElementById("linechart2").remove();
+document.getElementById("linechart3").remove();
+$("#linechartV1").append(`<canvas id="linechart" height="180px"></canvas>`);
+$("#linechartV2").append(`<canvas id="linechart2" height="180px"></canvas>`);
+$("#linechartV3").append(`<canvas id="linechart3" height="180px"></canvas>`);
 labels_date =[]
 $.getJSON(url, function (data){
 data_pourcent = [];// va stocker les pys selectionnees et leurs dernieres valeurs d'infections
@@ -749,8 +770,6 @@ Chart.defaults.global.legend.labels.usePointStyle = true;
 
 
 var ctx = document.getElementById('linechart').getContext('2d');
-if(window.myCharts != undefined)
-window.myCharts.destroy();
 var chart = new Chart(ctx, {
   type: 'line',
   data: {
@@ -799,8 +818,6 @@ for(let i=0;i<total_array_confirmed.length;i++){
 chart.update();
 
 var ctx = document.getElementById('linechart2').getContext('2d');
-if(window.myCharts != undefined)
-window.myCharts.destroy();
 var chart = new Chart(ctx, {
   type: 'line',
   data: {
