@@ -57,7 +57,7 @@ $(document).ready(function(){
 
 
   document.getElementById("lastupdate").innerHTML = 'Last Update '+data["US"][data["US"].length-1]["date"];// le dernier date de modification
-
+  
 /**********************Definir la map********* */
     am4core.ready(function() {
     
@@ -92,7 +92,7 @@ $(document).ready(function(){
       var polygonTemplate = polygonSeries.mapPolygons.template;
       
       //*****************Fonction afficher la graphe line lorsque on click sur un pays dans la map */
-      polygonTemplate.events.on("hit", function(ev) {
+     polygonTemplate.events.on("hit", function(ev) {
         try{
           document.getElementById("chart").remove();
           $("#chartV").append(`<canvas id="chart" ></canvas>`)
@@ -180,6 +180,7 @@ hs.properties.fill = am4core.color("#367B25");
       
     
       }); // end am4core.ready() 
+      
     });
   
 var date= new Date();
@@ -576,7 +577,7 @@ chart.legend = new am4charts.Legend();
 
 
 
-const url2 = 'https://covid19-server.chrismichael.now.sh/api/v1/FatalityRateByAge';
+const url2 = 'https://covid19-server.chrismichael.now.sh/api/v1/CountriesWhereCoronavirusHasSpread';
 $.getJSON(url2, function (data2) {
 
 am4core.ready(function() {
@@ -590,21 +591,21 @@ am4core.ready(function() {
   
   // Add data
   chart.data = [ {
-    "country": data2.table[0]["Age"],
-    "litres": data2.table[0]["DeathRateAllCases"]
+    "country": data2.table[0]["Country"],
+    "litres": data2.table[0]["Cases"]
   }, {
-    "country": data2.table[1]["Age"],
-    "litres":data2.table[1]["DeathRateAllCases"]
+    "country": data2.table[1]["Country"],
+    "litres":data2.table[1]["Cases"]
   }, {
-    "country": data2.table[2]["Age"],
-    "litres": data2.table[2]["DeathRateAllCases"]
+    "country": data2.table[2]["Country"],
+    "litres": data2.table[2]["Cases"]
   },{
-  "country": data2.table[3]["Age"],
-  "litres": data2.table[3]["DeathRateAllCases"]
+  "country": data2.table[3]["Country"],
+  "litres": data2.table[3]["Cases"]
   },
   {
-    "country": data2.table[4]["Age"],
-    "litres": data2.table[4]["DeathRateAllCases"]
+    "country": data2.table[4]["Country"],
+    "litres": data2.table[4]["Cases"]
     }];
   
   // Add and configure Series
@@ -631,7 +632,7 @@ am4core.ready(function() {
 
 //********** */ Searching **************///
 function filterFunction() {
-  var input, filter, ul, li, a, i;
+  var input, filter, a, i;
   input = document.getElementById("myInput");
   filter = input.value.toUpperCase();
   div = document.getElementById("country");
