@@ -577,7 +577,7 @@ chart.legend = new am4charts.Legend();
 
 
 
-const url2 = 'https://covid19-server.chrismichael.now.sh/api/v1/CountriesWhereCoronavirusHasSpread';
+const url2 = 'https://nepalcorona.info/api/v1/data/world';
 $.getJSON(url2, function (data2) {
 
 am4core.ready(function() {
@@ -591,22 +591,28 @@ am4core.ready(function() {
   
   // Add data
   chart.data = [ {
-    "country": data2.table[0]["Country"],
-    "litres": data2.table[0]["Cases"]
-  }, {
-    "country": data2.table[1]["Country"],
-    "litres":data2.table[1]["Cases"]
-  }, {
-    "country": data2.table[2]["Country"],
-    "litres": data2.table[2]["Cases"]
+    "country": data2[2]["country"],
+    "litres": data2[2]["totalCases"]
   },{
-  "country": data2.table[3]["Country"],
-  "litres": data2.table[3]["Cases"]
+  "country": data2[3]["country"],
+  "litres": data2[3]["totalCases"]
   },
   {
-    "country": data2.table[4]["Country"],
-    "litres": data2.table[4]["Cases"]
-    }];
+    "country": data2[4]["country"],
+    "litres": data2[4]["totalCases"]
+    },
+    {
+      "country": data2[5]["country"],
+      "litres": data2[5]["totalCases"]
+      },
+      {
+        "country": data2[6]["country"],
+        "litres": data2[6]["totalCases"]
+        },
+        {
+          "country": data2[7]["country"],
+          "litres": data2[7]["totalCases"]
+          }];
   
   // Add and configure Series
   var pieSeries = chart.series.push(new am4charts.PieSeries());
